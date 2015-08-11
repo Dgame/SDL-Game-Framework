@@ -96,7 +96,7 @@ namespace sdl {
 
             SDL_RenderCopy(
                 _renderer,
-                tex->get(),
+                tex->raw(),
                 TryCopyInto(src, &sdl_src),
                 TryCopyInto(dst, &sdl_dst)
             );
@@ -112,7 +112,7 @@ namespace sdl {
 
         SDL_RenderCopyEx(
             _renderer,
-            tex->get(),
+            tex->raw(),
             TryCopyInto(src, &sdl_src),
             TryCopyInto(dst, &sdl_dst),
             angle,
@@ -122,7 +122,7 @@ namespace sdl {
     }
 
     void Renderer::setRenderTarget(Texture* tex) const {
-        SDL_SetRenderTarget(_renderer, tex ? tex->get() : nullptr);
+        SDL_SetRenderTarget(_renderer, tex ? tex->raw() : nullptr);
     }
 
     void Renderer::setScale(f32_t sx, f32_t sy) const {

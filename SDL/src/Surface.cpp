@@ -46,7 +46,7 @@ namespace sdl {
     }
 
     Surface::Surface(const Surface& other) {
-        _srfc = other.get();
+        _srfc = other.raw();
         if (_srfc)
             _srfc->refcount++;
         else
@@ -65,7 +65,7 @@ namespace sdl {
         SDL_Rect sdl_src;
         SDL_Rect sdl_dst;
 
-        SDL_BlitSurface(srfc.get(), TryCopyInto(src, &sdl_src), _srfc, TryCopyInto(dst, &sdl_dst));
+        SDL_BlitSurface(srfc.raw(), TryCopyInto(src, &sdl_src), _srfc, TryCopyInto(dst, &sdl_dst));
     }
 
     u32_t Surface::width() const {

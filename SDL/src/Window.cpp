@@ -85,7 +85,7 @@ namespace sdl {
         SDL_Rect sdl_src;
         SDL_Rect sdl_dst;
 
-        SDL_BlitSurface(srfc.get(), TryCopyInto(src, &sdl_src), wnd_srfc, TryCopyInto(dst, &sdl_dst));
+        SDL_BlitSurface(srfc.raw(), TryCopyInto(src, &sdl_src), wnd_srfc, TryCopyInto(dst, &sdl_dst));
     }
 
     void Window::setTitle(const char* title) const {
@@ -193,7 +193,7 @@ namespace sdl {
     }
 
     void Window::setIcon(const Surface& srfc) const {
-        SDL_SetWindowIcon(_wnd, srfc.get());
+        SDL_SetWindowIcon(_wnd, srfc.raw());
     }
 
     u32_t Window::getFlags() const {
