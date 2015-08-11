@@ -5,7 +5,6 @@
 #include <string>
 
 #include "types.hpp"
-
 #include "Vector2.hpp"
 
 struct SDL_Window;
@@ -14,6 +13,7 @@ struct SDL_Renderer;
 
 namespace sdl {
     class Texture;
+    class Surface;
 
     struct Color;
     struct Rect;
