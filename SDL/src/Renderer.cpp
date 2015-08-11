@@ -1,6 +1,7 @@
 #include "Renderer.hpp"
 #include "Color.hpp"
 #include "Texture.hpp"
+#include "Surface.hpp"
 #include "Vector2.hpp"
 #include "Rect.hpp"
 
