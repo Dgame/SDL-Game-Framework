@@ -40,7 +40,8 @@ namespace sdl {
     }
 
     Surface Font::render(const std::string& text, const Color& fg, const Color* bg, Mode mode) const {
-        assert(_ttf);
+        if (!_ttf)
+            std::cerr << "Font is null" << std::endl;
 
         SDL_Color a;
         SDL_Color b;

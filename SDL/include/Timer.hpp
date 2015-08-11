@@ -12,6 +12,10 @@ namespace sdl {
         void start();
         void stop();
 
+        bool isRunning() const {
+            return _running;
+        }
+
         u32_t getTicks() const;
 
     private:
