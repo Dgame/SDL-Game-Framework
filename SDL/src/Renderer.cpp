@@ -42,9 +42,16 @@ namespace sdl {
         SDL_RenderClear(_renderer);
     }
 
-    Texture* Renderer::createTexture(SDL_Surface* srfc, bool free_srfc) {
-        if (srfc) {
-            SDL_Texture* sdl_tex = SDL_CreateTextureFromSurface(_renderer, srfc);
+    Texture* Renderer::createTexture(const std::string& filename) {
+        Surface srfc(filename);
+        return this->createTexture(srfc);
+    }
+
+    Texture* Renderer::createTexture(Surface& srfc) {
+        SDL_Surface* raw = srfc.raw();
+
+        if (raw) {
+            SDL_Texture* sdl_tex = SDL_CreateTextureFromSurface(_renderer, raw);
             if (!sdl_tex) {
                 std::cerr << "Error by creating a SDL_Texture*\n";
                 return nullptr;
@@ -52,11 +59,6 @@ namespace sdl {
 
             Texture* tex = new Texture(sdl_tex);
             _textures.push_back(tex);
-
-            if (free_srfc) {
-                SDL_FreeSurface(srfc);
-                srfc = nullptr;
-            }
 
             return tex;
         }

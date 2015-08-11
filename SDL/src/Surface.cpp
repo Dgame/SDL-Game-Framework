@@ -7,7 +7,6 @@
 #include "Surface.hpp"
 #include "Rect.hpp"
 #include "Color.hpp"
-#include "Renderer.hpp"
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 #define R_MASK 0xff000000
@@ -56,10 +55,6 @@ namespace sdl {
 
     Surface::~Surface() {
         SDL_FreeSurface(_srfc);
-    }
-
-    Texture* Surface::asTextureOf(Renderer* renderer) const {
-        return renderer->createTexture(_srfc, false);
     }
 
     void Surface::saveToFile(const char* filename) const {

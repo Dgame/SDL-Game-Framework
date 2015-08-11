@@ -11,7 +11,6 @@ namespace sdl {
     struct Rect;
     struct Color;
     class Texture;
-    class Renderer;
 
     class Surface {
     public:
@@ -22,8 +21,6 @@ namespace sdl {
         Surface(const Surface&);
         virtual ~Surface();
 
-        Texture* asTextureOf(Renderer*) const;
-
         void saveToFile(const char*) const;
         void blit(const Surface&, Rect* dst = nullptr, const Rect* src = nullptr) const;
 
@@ -33,7 +30,7 @@ namespace sdl {
         void* pixels() const;
         SDL_PixelFormat* getFormat() const;
 
-        SDL_Surface* get() const {
+        SDL_Surface* raw() const {
             return _srfc;
         }
 

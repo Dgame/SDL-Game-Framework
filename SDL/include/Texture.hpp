@@ -20,7 +20,7 @@ namespace sdl {
 
         void query(u32_t*, u32_t*, u8_t* access = nullptr) const;
 
-        SDL_Texture* get() const {
+        SDL_Texture* raw() const {
             return _tex;
         }
 

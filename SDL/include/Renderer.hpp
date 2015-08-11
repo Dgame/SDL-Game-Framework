@@ -2,6 +2,8 @@
 #define SDL_RENDERER_HPP
 
 #include <vector>
+#include <string>
+
 #include "types.hpp"
 
 #include "Vector2.hpp"
@@ -27,7 +29,8 @@ namespace sdl {
 
         void clear(const Color* col = nullptr) const;
 
-        Texture* createTexture(SDL_Surface*, bool);
+        Texture* createTexture(const std::string&);
+        Texture* createTexture(Surface&);
         Texture* createTexture(u16_t, u16_t, u32_t, u8_t);
 
         void copy(Texture*, const Rect*, const Rect* src = nullptr) const;
