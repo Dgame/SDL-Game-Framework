@@ -20,7 +20,7 @@ namespace sdl {
         _fontSize = fontSize == 0 ? TTF_DEFAULT_FONT_SIZE : fontSize;
         _ttf = TTF_OpenFont(filename.c_str(), _fontSize);
         if (!_ttf)
-            std::cerr << TTF_GetError() << std::endl;
+            std::cerr << "An error occured: " << TTF_GetError() << std::endl;
     }
 
     void Font::setStyle(Font::Style style) {
@@ -40,8 +40,11 @@ namespace sdl {
     }
 
     Surface Font::render(const std::string& text, const Color& fg, const Color* bg, Mode mode) const {
-        if (!_ttf)
+        if (!_ttf) {
             std::cerr << "Font is null" << std::endl;
+
+            return sdl::Surface(nullptr);
+        }
 
         SDL_Color a;
         SDL_Color b;
