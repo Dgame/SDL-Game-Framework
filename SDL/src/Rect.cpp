@@ -42,6 +42,11 @@ namespace sdl {
         return intersects == SDL_TRUE;
     }
 
+    void Rect::collapse() {
+        this->x = this->y = 0;
+        this->width = this->height = 0;
+    }
+
     Vector2i Rect::getEdgePosition(Edge edge) const {
         Vector2i pos;
         switch (edge) {

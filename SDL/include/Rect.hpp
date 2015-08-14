@@ -34,6 +34,8 @@ namespace sdl {
         bool isEmpty() const;
         bool intersectWith(const Rect&, Rect* intersection = nullptr) const;
 
+        void collapse();
+
         Vector2i getEdgePosition(Edge) const;
         Vector2i getCenter() const;
     };

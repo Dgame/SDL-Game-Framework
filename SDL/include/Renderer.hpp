@@ -46,16 +46,9 @@ namespace sdl {
         Rect getViewport() const;
 
         void drawLine(const Vector2i&, const Vector2i&) const;
-        // void drawLines(const Vector2i*, u32_t) const;
-
         void drawPoint(const Vector2i&) const;
-        // void drawPoints(const Vector2i*, u32_t) const;
-
         void drawRect(const Rect&) const;
-        // void drawRects(const Rect*, u32_t) const;
-
         void fillRect(const Rect&) const;
-        // void fillRects(const Rect*, u32_t) const;
 
         void setBlendMode(u8_t) const;
         u8_t getBlendMode() const;
