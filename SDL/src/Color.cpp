@@ -8,6 +8,9 @@ namespace sdl {
     const Color Color::Green(0, 255, 0);
     const Color Color::Blue(0, 0, 255);
     const Color Color::Yellow(255, 255, 0);
+    const Color Color::Orange(255, 128, 0);
+    const Color Color::Grey(192, 192, 192);
+    const Color Color::Cyan(0, 255, 255);
 
     Color::Color(u8_t r, u8_t g, u8_t b, u8_t a) : red(r), green(g), blue(b), alpha(a) {
 
