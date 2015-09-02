@@ -1,18 +1,17 @@
 #ifndef SDL_RENDERER_HPP
 #define SDL_RENDERER_HPP
 
-#include <vector>
 #include <string>
 
 #include "types.hpp"
 #include "Vector2.hpp"
+#include "Texture.hpp"
 
 struct SDL_Window;
 struct SDL_Surface;
 struct SDL_Renderer;
 
 namespace sdl {
-    class Texture;
     class Surface;
 
     struct Color;
@@ -29,14 +28,14 @@ namespace sdl {
 
         void clear(const Color* col = nullptr) const;
 
-        Texture* createTexture(const std::string&);
-        Texture* createTexture(Surface&);
-        Texture* createTexture(u16_t, u16_t, u32_t, u8_t);
+        Texture createTexture(const std::string&);
+        Texture createTexture(Surface&);
+        Texture createTexture(u16_t, u16_t, u32_t, u8_t);
 
-        void copy(Texture*, const Rect*, const Rect* src = nullptr) const;
-        void copy(Texture*, const Rect*, f64_t, const Rect* src = nullptr, const Vector2i* center = nullptr, u8_t flip = 0) const;
+        void copy(Texture&, const Rect*, const Rect* src = nullptr) const;
+        void copy(Texture&, const Rect*, f64_t, const Rect* src = nullptr, const Vector2i* center = nullptr, u8_t flip = 0) const;
 
-        void setRenderTarget(Texture*) const;
+        void setRenderTarget(Texture&) const;
 
         void setScale(f32_t, f32_t) const;
         void setScale(const Vector2f&) const;
@@ -57,7 +56,6 @@ namespace sdl {
 
     private:
         SDL_Renderer* _renderer;
-        std::vector<Texture*> _textures;
     };
 }
 

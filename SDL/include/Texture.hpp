@@ -2,6 +2,7 @@
 #define SDL_TEXTURE_HPP
 
 #include "types.hpp"
+#include <memory>
 
 struct SDL_Texture;
 struct SDL_Surface;
@@ -14,14 +15,12 @@ namespace sdl {
 
     class Texture {
     public:
-        explicit Texture(SDL_Texture*);
-        Texture(const Texture&) = delete;
-        virtual ~Texture();
+        explicit Texture(SDL_Texture*, u32_t, u32_t);
 
         void query(u32_t*, u32_t*, u8_t* access = nullptr) const;
 
         SDL_Texture* raw() const {
-            return _tex;
+            return _tex.get();
         }
 
         void* lock(const Rect* area = nullptr, i32_t* pitch = nullptr) const;
@@ -38,8 +37,19 @@ namespace sdl {
         void setBlendMode(u8_t) const;
         u8_t getBlendMode() const;
 
+        u32_t width() const {
+            return _width;
+        }
+
+        u32_t height() const {
+            return _height;
+        }
+
     private:
-        SDL_Texture* _tex;
+        std::shared_ptr<SDL_Texture> _tex;
+
+        u32_t _width;
+        u32_t _height;
     };
 }
 

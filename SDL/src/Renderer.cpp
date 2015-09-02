@@ -1,6 +1,5 @@
 #include "Renderer.hpp"
 #include "Color.hpp"
-#include "Texture.hpp"
 #include "Surface.hpp"
 #include "Vector2.hpp"
 #include "Rect.hpp"
@@ -19,10 +18,6 @@ namespace sdl {
     }
 
     Renderer::~Renderer() {
-        for (Texture* tex : _textures) {
-            delete tex;
-        }
-
         SDL_DestroyRenderer(_renderer);
     }
 
@@ -43,33 +38,22 @@ namespace sdl {
         SDL_RenderClear(_renderer);
     }
 
-    Texture* Renderer::createTexture(const std::string& filename) {
+    Texture Renderer::createTexture(const std::string& filename) {
         Surface srfc(filename);
         return this->createTexture(srfc);
     }
 
-    Texture* Renderer::createTexture(Surface& srfc) {
+    Texture Renderer::createTexture(Surface& srfc) {
         SDL_Surface* raw = srfc.raw();
-
-        if (raw) {
-            SDL_Texture* sdl_tex = SDL_CreateTextureFromSurface(_renderer, raw);
-            if (!sdl_tex) {
-                std::cerr << "Error by creating a SDL_Texture*\n";
-                return nullptr;
-            }
-
-            Texture* tex = new Texture(sdl_tex);
-            _textures.push_back(tex);
-
-            return tex;
+        SDL_Texture* sdl_tex = SDL_CreateTextureFromSurface(_renderer, raw);
+        if (!sdl_tex) {
+            std::cerr << "Error by creating a SDL_Texture*\n";
         }
 
-        std::cerr << "Invalid SDL_Surface*\n";
-
-        return nullptr;
+        return Texture(sdl_tex, raw->w, raw->h);
     }
 
-    Texture* Renderer::createTexture(u16_t w, u16_t h, u32_t format, u8_t access) {
+    Texture Renderer::createTexture(u16_t w, u16_t h, u32_t format, u8_t access) {
         auto sdl_access = static_cast<SDL_TextureAccess>(access);
 
         SDL_Texture* sdl_tex = SDL_CreateTexture(
@@ -81,30 +65,24 @@ namespace sdl {
 
         if (!sdl_tex) {
             std::cerr << "Error by creating a SDL_Texture*\n";
-            return nullptr;
         }
 
-        Texture* tex = new Texture(sdl_tex);
-        _textures.push_back(tex);
-
-        return tex;
+        return Texture(sdl_tex, w, h);
     }
 
-    void Renderer::copy(Texture* tex, const Rect* dst, const Rect* src) const {
-        if (tex) {
-            SDL_Rect sdl_src;
-            SDL_Rect sdl_dst;
+    void Renderer::copy(Texture& tex, const Rect* dst, const Rect* src) const {
+        SDL_Rect sdl_src;
+        SDL_Rect sdl_dst;
 
-            SDL_RenderCopy(
-                _renderer,
-                tex->raw(),
-                TryCopyInto(src, &sdl_src),
-                TryCopyInto(dst, &sdl_dst)
-            );
-        }
+        SDL_RenderCopy(
+            _renderer,
+            tex.raw(),
+            TryCopyInto(src, &sdl_src),
+            TryCopyInto(dst, &sdl_dst)
+        );
     }
 
-    void Renderer::copy(Texture* tex, const Rect* dst, f64_t angle, const Rect* src, const Vector2i* center, u8_t flip) const {
+    void Renderer::copy(Texture& tex, const Rect* dst, f64_t angle, const Rect* src, const Vector2i* center, u8_t flip) const {
         auto sdl_flip = static_cast<SDL_RendererFlip>(flip);
 
         SDL_Rect sdl_src;
@@ -113,7 +91,7 @@ namespace sdl {
 
         SDL_RenderCopyEx(
             _renderer,
-            tex->raw(),
+            tex.raw(),
             TryCopyInto(src, &sdl_src),
             TryCopyInto(dst, &sdl_dst),
             angle,
@@ -122,8 +100,8 @@ namespace sdl {
         );
     }
 
-    void Renderer::setRenderTarget(Texture* tex) const {
-        SDL_SetRenderTarget(_renderer, tex ? tex->raw() : nullptr);
+    void Renderer::setRenderTarget(Texture& tex) const {
+        SDL_SetRenderTarget(_renderer, tex.raw());
     }
 
     void Renderer::setScale(f32_t sx, f32_t sy) const {

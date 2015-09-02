@@ -42,6 +42,20 @@ namespace sdl {
         return intersects == SDL_TRUE;
     }
 
+    bool Rect::contains(const Vector2i& pos) const {
+#if SDL_VERSION_ATLEAST(2, 0, 4)
+        SDL_Rect sdl_rect;
+        SDL_Point sdl_point;
+
+        return SDL_PointInRect(pos.copyInto(&sdl_point), this->copyInto(&sdl_rect));
+#else
+        const i32_t rw = this->x + this->width;
+        const i32_t rh = this->y + this->height;
+
+        return pos.x >= this->x && pos.y >= this->y && pos.x < rw && pos.y < rh;
+#endif
+    }
+
     void Rect::collapse() {
         this->x = this->y = 0;
         this->width = this->height = 0;

@@ -33,6 +33,7 @@ namespace sdl {
 
         bool isEmpty() const;
         bool intersectWith(const Rect&, Rect* intersection = nullptr) const;
+        bool contains(const sdl::Vector2i&) const;
 
         void collapse();
 
