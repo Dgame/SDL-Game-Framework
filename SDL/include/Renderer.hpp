@@ -18,7 +18,6 @@ namespace sdl {
 
     class Renderer {
     public:
-        Renderer() = default;
         explicit Renderer(Window&, u32_t, i16_t driver_index = -1);
         Renderer(const Renderer&) = delete;
         virtual ~Renderer();
