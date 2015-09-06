@@ -8,26 +8,17 @@
 #include <iostream>
 
 namespace sdl {
-    Renderer::Renderer(SDL_Window* wnd, u8_t flags, i16_t driver_index) {
-        if (wnd) {
-            _renderer = SDL_CreateRenderer(wnd, driver_index, flags);
-            if (!_renderer)
-                std::cerr << "Error by creating a SDL_Renderer*\n";
-        } else
-            std::cerr << "Invalid SDL_Window*\n";
-    }
+    Renderer::Renderer(SDL_Renderer* renderer) : _renderer(renderer, SDL_DestroyRenderer) {
 
-    Renderer::~Renderer() {
-        SDL_DestroyRenderer(_renderer);
     }
 
     void Renderer::setDrawColor(const Color& col) const {
-        SDL_SetRenderDrawColor(_renderer, col.red, col.green, col.blue, col.alpha);
+        SDL_SetRenderDrawColor(_renderer.get(), col.red, col.green, col.blue, col.alpha);
     }
 
     Color Renderer::getDrawColor() const {
         Color col;
-        SDL_GetRenderDrawColor(_renderer, &col.red, &col.green, &col.blue, &col.alpha);
+        SDL_GetRenderDrawColor(_renderer.get(), &col.red, &col.green, &col.blue, &col.alpha);
 
         return col;
     }
@@ -35,7 +26,7 @@ namespace sdl {
     void Renderer::clear(const Color* col) const {
         if (col)
             this->setDrawColor(*col);
-        SDL_RenderClear(_renderer);
+        SDL_RenderClear(_renderer.get());
     }
 
     Texture Renderer::createTexture(const std::string& filename) {
@@ -45,7 +36,7 @@ namespace sdl {
 
     Texture Renderer::createTexture(Surface& srfc) {
         SDL_Surface* raw = srfc.raw();
-        SDL_Texture* sdl_tex = SDL_CreateTextureFromSurface(_renderer, raw);
+        SDL_Texture* sdl_tex = SDL_CreateTextureFromSurface(_renderer.get(), raw);
         if (!sdl_tex) {
             std::cerr << "Error by creating a SDL_Texture*\n";
         }
@@ -57,7 +48,7 @@ namespace sdl {
         auto sdl_access = static_cast<SDL_TextureAccess>(access);
 
         SDL_Texture* sdl_tex = SDL_CreateTexture(
-            _renderer,
+            _renderer.get(),
             format,
             sdl_access,
             w, h
@@ -75,7 +66,7 @@ namespace sdl {
         SDL_Rect sdl_dst;
 
         SDL_RenderCopy(
-            _renderer,
+            _renderer.get(),
             tex.raw(),
             TryCopyInto(src, &sdl_src),
             TryCopyInto(dst, &sdl_dst)
@@ -90,7 +81,7 @@ namespace sdl {
         SDL_Point sdl_point;
 
         SDL_RenderCopyEx(
-            _renderer,
+            _renderer.get(),
             tex.raw(),
             TryCopyInto(src, &sdl_src),
             TryCopyInto(dst, &sdl_dst),
@@ -101,66 +92,66 @@ namespace sdl {
     }
 
     void Renderer::setRenderTarget(Texture& tex) const {
-        SDL_SetRenderTarget(_renderer, tex.raw());
+        SDL_SetRenderTarget(_renderer.get(), tex.raw());
     }
 
     void Renderer::setScale(f32_t sx, f32_t sy) const {
-        SDL_RenderSetScale(_renderer, sx, sy);
+        SDL_RenderSetScale(_renderer.get(), sx, sy);
     }
 
     void Renderer::setScale(const Vector2f& scale) const {
-        SDL_RenderSetScale(_renderer, scale.x, scale.y);
+        SDL_RenderSetScale(_renderer.get(), scale.x, scale.y);
     }
 
     Vector2f Renderer::getScale() const {
         Vector2f scale;
-        SDL_RenderGetScale(_renderer, &scale.x, &scale.y);
+        SDL_RenderGetScale(_renderer.get(), &scale.x, &scale.y);
 
         return scale;
     }
 
     void Renderer::setViewport(const Rect* viewport) const {
         SDL_Rect rect;
-        SDL_RenderSetViewport(_renderer, TryCopyInto(viewport, &rect));
+        SDL_RenderSetViewport(_renderer.get(), TryCopyInto(viewport, &rect));
     }
 
     Rect Renderer::getViewport() const {
         SDL_Rect rect;
-        SDL_RenderGetViewport(_renderer, &rect);
+        SDL_RenderGetViewport(_renderer.get(), &rect);
 
         return Rect(rect.x, rect.y, rect.w, rect.h);
     }
 
     void Renderer::drawLine(const Vector2i& start, const Vector2i& end) const {
-        SDL_RenderDrawLine(_renderer, start.x, start.y, end.x, end.y);
+        SDL_RenderDrawLine(_renderer.get(), start.x, start.y, end.x, end.y);
     }
 
     void Renderer::drawPoint(const Vector2i& vec) const {
-        SDL_RenderDrawPoint(_renderer, vec.x, vec.y);
+        SDL_RenderDrawPoint(_renderer.get(), vec.x, vec.y);
     }
 
     void Renderer::drawRect(const Rect& rect) const {
         SDL_Rect sdl_rect;
-        SDL_RenderDrawRect(_renderer, rect.copyInto(&sdl_rect));
+        SDL_RenderDrawRect(_renderer.get(), rect.copyInto(&sdl_rect));
     }
 
     void Renderer::fillRect(const Rect& rect) const {
         SDL_Rect sdl_rect;
-        SDL_RenderFillRect(_renderer, rect.copyInto(&sdl_rect));
+        SDL_RenderFillRect(_renderer.get(), rect.copyInto(&sdl_rect));
     }
 
     void Renderer::setBlendMode(u8_t blend_mode) const {
-        SDL_SetRenderDrawBlendMode(_renderer, static_cast<SDL_BlendMode>(blend_mode));
+        SDL_SetRenderDrawBlendMode(_renderer.get(), static_cast<SDL_BlendMode>(blend_mode));
     }
 
     u8_t Renderer::getBlendMode() const {
         SDL_BlendMode blend_mode;
-        SDL_GetRenderDrawBlendMode(_renderer, &blend_mode);
+        SDL_GetRenderDrawBlendMode(_renderer.get(), &blend_mode);
 
         return blend_mode;
     }
 
     void Renderer::present() const {
-        SDL_RenderPresent(_renderer);
+        SDL_RenderPresent(_renderer.get());
     }
 }

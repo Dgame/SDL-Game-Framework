@@ -23,7 +23,7 @@ namespace sdl {
         Window(const Window&) = delete;
         virtual ~Window();
 
-        Renderer* createRenderer(u32_t, i16_t driver_index = -1);
+        Renderer createRenderer(u32_t, i16_t driver_index = -1);
 
         void clear(const Color&) const;
 
@@ -65,7 +65,6 @@ namespace sdl {
         static u16_t _wnd_count;
 
         SDL_Window* _wnd;
-        std::vector<Renderer*> _renderer;
     };
 } // end namespace
 

@@ -12,27 +12,26 @@ namespace sdl {
         this->loadFromFile(filename, fontSize);
     }
 
-    Font::~Font() {
-        TTF_CloseFont(_ttf);
-    }
-
     void Font::loadFromFile(const std::string& filename, u8_t fontSize) {
         _fontSize = fontSize == 0 ? TTF_DEFAULT_FONT_SIZE : fontSize;
-        _ttf = TTF_OpenFont(filename.c_str(), _fontSize);
-        if (!_ttf)
+
+        TTF_Font* ttf = TTF_OpenFont(filename.c_str(), _fontSize);
+        if (!ttf)
             std::cerr << "An error occured: " << TTF_GetError() << std::endl;
+        else
+            _ttf.reset(ttf, TTF_CloseFont);
     }
 
     void Font::setStyle(Font::Style style) {
         if (_ttf)
-            TTF_SetFontStyle(_ttf, static_cast<i32_t>(style));
+            TTF_SetFontStyle(_ttf.get(), static_cast<i32_t>(style));
         else
             std::cerr << "Font is null" << std::endl;
     }
 
     Font::Style Font::getStyle() const {
         if (_ttf)
-            return static_cast<Style>(TTF_GetFontStyle(_ttf));
+            return static_cast<Style>(TTF_GetFontStyle(_ttf.get()));
 
         std::cerr << "Font is null" << std::endl;
 
@@ -54,13 +53,13 @@ namespace sdl {
         SDL_Surface* srfc = nullptr;
         switch (mode) {
             case Mode::Solid:
-                srfc = TTF_RenderUTF8_Solid(_ttf, text.c_str(), *fg.copyInto(&a));
+                srfc = TTF_RenderUTF8_Solid(_ttf.get(), text.c_str(), *fg.copyInto(&a));
                 break;
             case Mode::Shaded:
-                srfc = TTF_RenderUTF8_Shaded(_ttf, text.c_str(), *fg.copyInto(&a), sdl_bg ? *sdl_bg : b);
+                srfc = TTF_RenderUTF8_Shaded(_ttf.get(), text.c_str(), *fg.copyInto(&a), sdl_bg ? *sdl_bg : b);
                 break;
             case Mode::Blended:
-                srfc = TTF_RenderUTF8_Blended(_ttf, text.c_str(), *fg.copyInto(&a));
+                srfc = TTF_RenderUTF8_Blended(_ttf.get(), text.c_str(), *fg.copyInto(&a));
                 break;
         }
 

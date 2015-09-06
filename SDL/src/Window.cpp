@@ -49,25 +49,19 @@ namespace sdl {
     }
 
     Window::~Window() {
-        for (Renderer* rend : _renderer) {
-            delete rend;
-        }
-
         SDL_DestroyWindow(_wnd);
 
         _wnd_count--;
         if (_wnd_count == 0) {
-            // unload the dynamically loaded image libraries
             IMG_Quit();
             SDL_Quit();
         }
     }
 
-    Renderer* Window::createRenderer(u32_t flags, i16_t driver_index) {
-        Renderer* my_renderer = new Renderer(_wnd, flags, driver_index);
-        _renderer.emplace_back(my_renderer);
+    Renderer Window::createRenderer(u32_t flags, i16_t driver_index) {
+        SDL_Renderer* renderer = SDL_CreateRenderer(_wnd, driver_index, flags);
 
-        return my_renderer;
+        return Renderer(renderer);
     }
 
     void Window::clear(const Color& col) const {

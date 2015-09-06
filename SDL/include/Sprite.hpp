@@ -3,38 +3,44 @@
 
 #include <string>
 
+#include "Rect.hpp"
+#include "Texture.hpp"
+
 #include "types.hpp"
 #include "Vector2.hpp"
 
 namespace sdl {
     class Renderer;
-    class Texture;
     class Surface;
 
     class Sprite {
     public:
-        Vector2f position;
+        f32_t angle = 0;
         f32_t rotation = 0;
         f32_t scale = 1;
 
-        explicit Sprite(Renderer*);
+        explicit Sprite(Renderer&);
 
         void load(const std::string&);
-        void load(const Surface&);
+        void load(Surface&);
 
-        void draw() const;
+        void draw();
 
         const Rect& getRect() const {
             return _rect;
         }
 
-        void move(f32_t dx, f32_t dy);
-        void move(const Vector2f& offset);
+        void setPosition(f32_t, f32_t);
+        void setPosition(const Vector2f&);
+
+        void move(f32_t, f32_t);
+        void move(const Vector2f&);
 
     private:
+        Vector2f _position;
         Renderer* _renderer;
-        Texture* _texture;
-        Rect* _rect;
+        Texture _texture;
+        Rect _rect;
     };
 }
 

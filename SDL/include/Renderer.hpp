@@ -2,6 +2,7 @@
 #define SDL_RENDERER_HPP
 
 #include <string>
+#include <memory>
 
 #include "types.hpp"
 #include "Vector2.hpp"
@@ -19,9 +20,8 @@ namespace sdl {
 
     class Renderer {
     public:
-        explicit Renderer(SDL_Window*, u8_t, i16_t driver_index = -1);
-        Renderer(const Renderer&) = delete;
-        virtual ~Renderer();
+        Renderer() = default;
+        explicit Renderer(SDL_Renderer*);
 
         void setDrawColor(const Color&) const;
         Color getDrawColor() const;
@@ -55,7 +55,7 @@ namespace sdl {
         void present() const;
 
     private:
-        SDL_Renderer* _renderer;
+        std::shared_ptr<SDL_Renderer> _renderer;
     };
 }
 

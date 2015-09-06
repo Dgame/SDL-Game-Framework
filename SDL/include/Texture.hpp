@@ -1,8 +1,9 @@
 #ifndef SDL_TEXTURE_HPP
 #define SDL_TEXTURE_HPP
 
-#include "types.hpp"
 #include <memory>
+
+#include "types.hpp"
 
 struct SDL_Texture;
 struct SDL_Surface;
@@ -15,6 +16,7 @@ namespace sdl {
 
     class Texture {
     public:
+        Texture() = default;
         explicit Texture(SDL_Texture*, u32_t, u32_t);
 
         void query(u32_t*, u32_t*, u8_t* access = nullptr) const;

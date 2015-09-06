@@ -3,7 +3,7 @@ FRAMEWORK_DIR = SDL\src
 
 FRAMEWORK_FILES = $(FRAMEWORK_DIR)\Window.cpp $(FRAMEWORK_DIR)\Color.cpp  $(FRAMEWORK_DIR)\Vector2.cpp $(FRAMEWORK_DIR)\Rect.cpp \
   $(FRAMEWORK_DIR)\Texture.cpp $(FRAMEWORK_DIR)\Renderer.cpp $(FRAMEWORK_DIR)\Event.cpp \
-  $(FRAMEWORK_DIR)\Surface.cpp $(FRAMEWORK_DIR)\Timer.cpp $(FRAMEWORK_DIR)\Font.cpp
+  $(FRAMEWORK_DIR)\Surface.cpp $(FRAMEWORK_DIR)\Timer.cpp $(FRAMEWORK_DIR)\Font.cpp $(FRAMEWORK_DIR)\Sprite.cpp
 
 TEST_FILES = main.cpp
 

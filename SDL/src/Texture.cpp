@@ -25,9 +25,9 @@ namespace sdl {
     }
 
     void* Texture::lock(const Rect* area, i32_t* pitch) const {
-        void* pixels = nullptr;
-
+        void* pixels;
         SDL_Rect rect;
+
         SDL_LockTexture(_tex.get(), TryCopyInto(area, &rect), &pixels, pitch);
 
         return pixels;
@@ -39,6 +39,7 @@ namespace sdl {
 
     void Texture::update(const void* pixels, const Rect* area, i32_t pitch) const {
         SDL_Rect rect;
+
         SDL_UpdateTexture(_tex.get(), TryCopyInto(area, &rect), pixels, pitch);
     }
 
@@ -48,6 +49,7 @@ namespace sdl {
 
     Color Texture::getColorMod() const {
         Color col;
+
         SDL_GetTextureColorMod(_tex.get(), &col.red, &col.green, &col.blue);
         SDL_GetTextureAlphaMod(_tex.get(), &col.alpha);
 
@@ -60,6 +62,7 @@ namespace sdl {
 
     u8_t Texture::getOpcacity() const {
         u8_t alpha;
+
         SDL_GetTextureAlphaMod(_tex.get(), &alpha);
 
         return alpha;

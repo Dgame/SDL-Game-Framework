@@ -2,6 +2,8 @@
 #define SDL_TTF_FONT_HPP
 
 #include <string>
+#include <memory>
+
 #include <SDL_ttf.h>
 
 #include "types.hpp"
@@ -41,9 +43,8 @@ namespace sdl {
             Blended
         };
 
+        Font() = default;
         explicit Font(const std::string&, u8_t);
-        Font(const Font&) = delete;
-        virtual ~Font();
 
         void loadFromFile(const std::string&, u8_t);
 
@@ -53,7 +54,7 @@ namespace sdl {
         Surface render(const std::string&, const Color&, const Color* bg = nullptr, Mode mode = Mode::Solid) const;
 
     private:
-        TTF_Font* _ttf;
+        std::shared_ptr<TTF_Font> _ttf;
         u8_t _fontSize;
     };
 }
