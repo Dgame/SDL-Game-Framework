@@ -2,18 +2,16 @@
 #define SDL_RENDERER_HPP
 
 #include <string>
-#include <memory>
 
 #include "types.hpp"
 #include "Vector2.hpp"
-#include "Texture.hpp"
 
-struct SDL_Window;
-struct SDL_Surface;
 struct SDL_Renderer;
 
 namespace sdl {
+    class Window;
     class Surface;
+    class Texture;
 
     struct Color;
     struct Rect;
@@ -21,16 +19,18 @@ namespace sdl {
     class Renderer {
     public:
         Renderer() = default;
-        explicit Renderer(SDL_Renderer*);
+        explicit Renderer(Window&, u32_t, i16_t driver_index = -1);
+        Renderer(const Renderer&) = delete;
+        virtual ~Renderer();
+
+        SDL_Renderer* raw() const {
+            return _renderer;
+        }
 
         void setDrawColor(const Color&) const;
         Color getDrawColor() const;
 
         void clear(const Color* col = nullptr) const;
-
-        Texture createTexture(const std::string&);
-        Texture createTexture(Surface&);
-        Texture createTexture(u16_t, u16_t, u32_t, u8_t);
 
         void copy(Texture&, const Rect*, const Rect* src = nullptr) const;
         void copy(Texture&, const Rect*, f64_t, const Rect* src = nullptr, const Vector2i* center = nullptr, u8_t flip = 0) const;
@@ -55,7 +55,7 @@ namespace sdl {
         void present() const;
 
     private:
-        std::shared_ptr<SDL_Renderer> _renderer;
+        SDL_Renderer* _renderer = nullptr;
     };
 }
 

@@ -28,16 +28,11 @@ namespace sdl {
     }
 
     Surface::Surface(void* pixel_data, u16_t w, u16_t h, u8_t d) {
-        const u16_t pitch = w * (d / 8);
-        _srfc = SDL_CreateRGBSurfaceFrom(pixel_data, w, h, d, pitch, R_MASK, G_MASK, B_MASK, A_MASK);
-        if (!_srfc)
-            std::cerr << "Invalid SDL_Surface*\n";
+       this->load(pixel_data, w, h, d);
     }
 
     Surface::Surface(const std::string& filename) {
-        _srfc = IMG_Load(filename.c_str());
-        if (!_srfc)
-            std::cerr << "Invalid SDL_Surface*\n";
+        this->load(filename);
     }
 
     Surface::Surface(SDL_Surface* srfc) : _srfc(srfc) {
@@ -55,6 +50,19 @@ namespace sdl {
 
     Surface::~Surface() {
         SDL_FreeSurface(_srfc);
+    }
+
+    void Surface::load(void* pixel_data, u16_t w, u16_t h, u8_t d) {
+        const u16_t pitch = w * (d / 8);
+        _srfc = SDL_CreateRGBSurfaceFrom(pixel_data, w, h, d, pitch, R_MASK, G_MASK, B_MASK, A_MASK);
+        if (!_srfc)
+            std::cerr << "Invalid SDL_Surface*\n";
+    }
+
+    void Surface::load(const std::string& filename) {
+        _srfc = IMG_Load(filename.c_str());
+        if (!_srfc)
+            std::cerr << "Invalid SDL_Surface*\n";
     }
 
     void Surface::saveToFile(const char* filename) const {

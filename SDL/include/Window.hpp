@@ -2,10 +2,8 @@
 #define SDL_GAME_WINDOW_HPP
 
 #include <string>
-#include <vector>
 
 #include "types.hpp"
-
 #include "Vector2.hpp"
 
 struct SDL_Window;
@@ -23,7 +21,9 @@ namespace sdl {
         Window(const Window&) = delete;
         virtual ~Window();
 
-        Renderer createRenderer(u32_t, i16_t driver_index = -1);
+        SDL_Window* raw() const {
+            return _wnd;
+        }
 
         void clear(const Color&) const;
 
@@ -64,8 +64,8 @@ namespace sdl {
     private:
         static u16_t _wnd_count;
 
-        SDL_Window* _wnd;
+        SDL_Window* _wnd = nullptr;
     };
-} // end namespace
+}
 
 #endif

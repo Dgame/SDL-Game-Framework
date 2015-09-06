@@ -3,20 +3,22 @@
 #include "Renderer.hpp"
 #include "Surface.hpp"
 
+#include <iostream>
+
 namespace sdl {
     Sprite::Sprite(Renderer& renderer) : _renderer(&renderer) {
 
     }
 
     void Sprite::load(const std::string& filename) {
-        _texture = _renderer->createTexture(filename);
+        _texture.load(*_renderer, filename);
 
         _rect.width = _texture.width();
         _rect.height = _texture.height();
     }
 
     void Sprite::load(Surface& srfc) {
-        _texture = _renderer->createTexture(srfc);
+        _texture.load(*_renderer, srfc);
 
         _rect.width = _texture.width();
         _rect.height = _texture.height();
@@ -50,6 +52,6 @@ namespace sdl {
     }
 
     void Sprite::draw() {
-        _renderer->copy(_texture, &_rect, this->angle);
+        _renderer->copy(_texture, &_rect, _rotation);
     }
 }

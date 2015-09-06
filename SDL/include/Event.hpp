@@ -64,7 +64,7 @@ namespace sdl {
 
         union {
             WindowEvent window;
-            KeyboardEvent key;
+            KeyboardEvent keyboard;
             MouseMotionEvent motion;
             MouseButtonEvent button;
             MouseWheelEvent wheel;

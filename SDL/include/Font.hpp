@@ -2,7 +2,6 @@
 #define SDL_TTF_FONT_HPP
 
 #include <string>
-#include <memory>
 
 #include <SDL_ttf.h>
 
@@ -45,6 +44,8 @@ namespace sdl {
 
         Font() = default;
         explicit Font(const std::string&, u8_t);
+        Font(const Font&) = delete;
+        virtual ~Font();
 
         void loadFromFile(const std::string&, u8_t);
 
@@ -54,7 +55,7 @@ namespace sdl {
         Surface render(const std::string&, const Color&, const Color* bg = nullptr, Mode mode = Mode::Solid) const;
 
     private:
-        std::shared_ptr<TTF_Font> _ttf;
+        TTF_Font* _ttf = nullptr;
         u8_t _fontSize;
     };
 }

@@ -12,11 +12,11 @@ namespace sdl {
                     event->timestamp = sdl_event.key.timestamp;
                     event->windowID = sdl_event.key.windowID;
 
-                    event->key.state = sdl_event.key.state;
-                    event->key.repeat = sdl_event.key.repeat;
-                    event->key.code = sdl_event.key.keysym.scancode;
-                    event->key.key = sdl_event.key.keysym.sym;
-                    event->key.mod = sdl_event.key.keysym.mod;
+                    event->keyboard.state = sdl_event.key.state;
+                    event->keyboard.repeat = sdl_event.key.repeat;
+                    event->keyboard.code = sdl_event.key.keysym.scancode;
+                    event->keyboard.key = sdl_event.key.keysym.sym;
+                    event->keyboard.mod = sdl_event.key.keysym.mod;
                 break;
 
                 case SDL_MOUSEMOTION:

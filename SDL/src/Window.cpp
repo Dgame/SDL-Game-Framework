@@ -58,12 +58,6 @@ namespace sdl {
         }
     }
 
-    Renderer Window::createRenderer(u32_t flags, i16_t driver_index) {
-        SDL_Renderer* renderer = SDL_CreateRenderer(_wnd, driver_index, flags);
-
-        return Renderer(renderer);
-    }
-
     void Window::clear(const Color& col) const {
         SDL_Surface* wnd_srfc = SDL_GetWindowSurface(_wnd);
         SDL_FillRect(wnd_srfc, nullptr, col.mapFor(wnd_srfc->format));

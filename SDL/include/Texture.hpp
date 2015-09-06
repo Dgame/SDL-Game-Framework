@@ -1,28 +1,36 @@
 #ifndef SDL_TEXTURE_HPP
 #define SDL_TEXTURE_HPP
 
-#include <memory>
+#include <string>
 
 #include "types.hpp"
 
 struct SDL_Texture;
-struct SDL_Surface;
-struct SDL_Renderer;
-struct SDL_Rect;
 
 namespace sdl {
+    class Renderer;
+    class Surface;
+
     struct Rect;
     struct Color;
 
     class Texture {
     public:
         Texture() = default;
-        explicit Texture(SDL_Texture*, u32_t, u32_t);
+        explicit Texture(SDL_Texture*);
+        explicit Texture(Renderer&, const std::string&);
+        explicit Texture(Renderer&, Surface&);
+        explicit Texture(Renderer&, u16_t, u16_t, u32_t, u8_t);
+        Texture(const Texture&) = delete;
+        virtual ~Texture();
+
+        void load(Renderer&, const std::string&);
+        void load(Renderer&, Surface&);
 
         void query(u32_t*, u32_t*, u8_t* access = nullptr) const;
 
         SDL_Texture* raw() const {
-            return _tex.get();
+            return _tex;
         }
 
         void* lock(const Rect* area = nullptr, i32_t* pitch = nullptr) const;
@@ -48,10 +56,10 @@ namespace sdl {
         }
 
     private:
-        std::shared_ptr<SDL_Texture> _tex;
+        SDL_Texture* _tex = nullptr;
 
-        u32_t _width;
-        u32_t _height;
+        u32_t _width = 0;
+        u32_t _height = 0;
     };
 }
 

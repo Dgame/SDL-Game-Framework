@@ -6,7 +6,7 @@
 
 int main() {
     sdl::Window wnd("Test - App", sdl::Vector2i(100, 100), 640, 480);
-    sdl::Renderer renderer = wnd.createRenderer(SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    sdl::Renderer renderer(wnd, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     // renderer.setDrawColor(sdl::Color::White);
 
     sdl::Sprite quad(renderer);
@@ -27,7 +27,9 @@ int main() {
 
                 case SDL_KEYDOWN:
                     quad.move(5, -5);
-                    if (event.key.key == SDLK_ESCAPE) {
+                    quad.rotate(22.5);
+
+                    if (event.keyboard.key == SDLK_ESCAPE) {
                         running = false;
                     }
                 break;

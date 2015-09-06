@@ -15,16 +15,11 @@ namespace sdl {
 
     class Sprite {
     public:
-        f32_t angle = 0;
-        f32_t rotation = 0;
-        f32_t scale = 1;
-
         explicit Sprite(Renderer&);
+        Sprite(const Sprite&) = delete;
 
         void load(const std::string&);
         void load(Surface&);
-
-        void draw();
 
         const Rect& getRect() const {
             return _rect;
@@ -36,8 +31,31 @@ namespace sdl {
         void move(f32_t, f32_t);
         void move(const Vector2f&);
 
+        void rotate(f32_t rotation) {
+            _rotation += rotation;
+            if (_rotation > 360 || _rotation < -360)
+                _rotation = 0;
+        }
+
+        void setRotation(f32_t rotation) {
+            _rotation = rotation;
+        }
+
+        void scale(f32_t offset) {
+            _scale += offset;
+        }
+
+        void setScale(f32_t offset) {
+            _scale = offset;
+        }
+
+        void draw();
+
     private:
         Vector2f _position;
+        f32_t _rotation = 0;
+        f32_t _scale = 1;
+
         Renderer* _renderer;
         Texture _texture;
         Rect _rect;

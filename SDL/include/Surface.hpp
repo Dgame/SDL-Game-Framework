@@ -14,12 +14,16 @@ namespace sdl {
 
     class Surface {
     public:
+        Surface() = default;
+        explicit Surface(SDL_Surface*);
         explicit Surface(u16_t, u16_t, u8_t);
         explicit Surface(void*, u16_t, u16_t, u8_t);
         explicit Surface(const std::string&);
-        explicit Surface(SDL_Surface*);
         Surface(const Surface&);
         virtual ~Surface();
+
+        void load(void*, u16_t, u16_t, u8_t);
+        void load(const std::string&);
 
         void saveToFile(const char*) const;
         void blit(const Surface&, Rect* dst = nullptr, const Rect* src = nullptr) const;
@@ -47,7 +51,7 @@ namespace sdl {
         u8_t getBlendMode() const;
 
     private:
-        SDL_Surface* _srfc;
+        SDL_Surface* _srfc = nullptr;
     };
 }
 
