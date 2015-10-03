@@ -2,6 +2,7 @@
 #define SDL_SPRITE_HPP
 
 #include <string>
+#include <cmath>
 
 #include "Rect.hpp"
 #include "Texture.hpp"
@@ -28,17 +29,26 @@ namespace sdl {
         void setPosition(f32_t, f32_t);
         void setPosition(const Vector2f&);
 
+        const Vector2f& getPosition() const {
+            return _position;
+        }
+
         void move(f32_t, f32_t);
         void move(const Vector2f&);
 
         void rotate(f32_t rotation) {
             _rotation += rotation;
-            if (_rotation > 360 || _rotation < -360)
-                _rotation = 0;
+            if (_rotation > 360 || _rotation < -360) {
+                _rotation = std::fmod(_rotation, 360);
+            }
         }
 
         void setRotation(f32_t rotation) {
             _rotation = rotation;
+        }
+
+        f32_t getRotation() const {
+            return _rotation;
         }
 
         void scale(f32_t offset) {
@@ -47,6 +57,10 @@ namespace sdl {
 
         void setScale(f32_t offset) {
             _scale = offset;
+        }
+
+        f32_t getScale() const {
+            return _scale;
         }
 
         void draw();
